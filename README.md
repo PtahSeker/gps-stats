@@ -133,3 +133,9 @@ After building binary it can be compressed using excellent
 ```sh
 upx --lzma release/*
 ```
+
+## Development
+
+```sh
+go run -tags testkml gps-stats.go
+```

@@ -719,6 +719,7 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 
 		prevJibeTurnPoints := []Point{}
 		prevTackTurnPoints := []Point{}
+		turnTracks := []Track{}
 
 		for i := 1; i < len(ps); i++ {
 			res.totalDistance = res.totalDistance + distance(ps[i-1], ps[i])
@@ -780,6 +781,7 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 				if !overlapByGlobalIdx(prevJibeTurnPoints, subtrackTurn500m.ps) {	
 					res.jibesCount++
 					prevJibeTurnPoints = subtrackTurn500m.ps
+					turnTracks = append(turnTracks, subtrackTurn500m)
 				}
 			}
 			// Count tacks and save best delta
@@ -791,6 +793,7 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 				if !overlapByGlobalIdx(prevTackTurnPoints, subtrackTurn500m.ps) {
 					res.wDirStats.tacksCount++
 					prevTackTurnPoints = subtrackTurn500m.ps
+					turnTracks = append(turnTracks, subtrackTurn500m)
 				}
 			}
 			// Save the best starboard stats
@@ -895,6 +898,8 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 				}
 			}
 		}
+
+		ExportManeuversToKML(turnTracks, windDir, "testdata/turns.kml")
 
 	}
 
