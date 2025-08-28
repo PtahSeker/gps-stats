@@ -717,8 +717,7 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 			setTackTypeToTracks(windDir, []*Track{&trackTurn500m, &subtrackTurn500m})
 		}
 
-		prevJibeTurnPoints := []Point{}
-		prevTackTurnPoints := []Point{}
+		prevTurnPoints := []Point{}
 
 		for i := 1; i < len(ps); i++ {
 			res.totalDistance = res.totalDistance + distance(ps[i-1], ps[i])
@@ -777,9 +776,9 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 					res.alpha500m = subtrackTurn500m
 				}
 				// Only count jibe if there is no overlap by globalIdx with previous jibe subtrack
-				if !overlapByGlobalIdx(prevJibeTurnPoints, subtrackTurn500m.ps) {	
+				if !overlapByGlobalIdx(prevTurnPoints, subtrackTurn500m.ps) {
 					res.jibesCount++
-					prevJibeTurnPoints = subtrackTurn500m.ps
+					prevTurnPoints = subtrackTurn500m.ps
 				}
 			}
 			// Count tacks and save best delta
@@ -788,9 +787,9 @@ func CalculateStats(ps []Point, statType StatFlag, speedUnits UnitsFlag, windDir
 					res.wDirStats.delta500m = subtrackTurn500m
 				}
 				// Only count tack if there is no overlap by globalIdx with previous tack subtrack
-				if !overlapByGlobalIdx(prevTackTurnPoints, subtrackTurn500m.ps) {
+				if !overlapByGlobalIdx(prevTurnPoints, subtrackTurn500m.ps) {
 					res.wDirStats.tacksCount++
-					prevTackTurnPoints = subtrackTurn500m.ps
+					prevTurnPoints = subtrackTurn500m.ps
 				}
 			}
 			// Save the best starboard stats
